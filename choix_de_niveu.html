@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iGetSense - Inscription</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --color-primary: #d4af37;
+      --color-primary-dark: #b8860b;
+      --color-secondary: #3498db;
+      --color-bg: #fafafa;
+      --color-text: #222;
+      --transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --card-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      --input-focus-glow: 0 0 0 4px rgba(212, 175, 55, 0.4);
+    }
+    body.dark {
+      --color-bg: #121212;
+      --color-text: #f0f0f0;
+      --color-primary: #ffc107;
+      --color-primary-dark: #ff9800;
+      --color-secondary: #4fc3f7;
+      --card-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      --input-focus-glow: 0 0 0 4px rgba(10, 8, 2, 0.3);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      overflow-x: hidden;
+    }
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    #page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+      height: 70px;
+      position: relative;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+    .logo:hover {
+      transform: scale(1.02);
+    }
+    .profile-icon {
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      border: 2px solid white;
+      border-radius: 50%;
+      padding: 2px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+      background: white;
+    }
+    .profile-icon:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 0.5s ease;
+    }
+    .profile-icon:hover img {
+      transform: scale(1.1);
+    }
+    
+    /* Contenu principal */
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2.5rem;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 1s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    body.dark .container {
+      background: rgba(32, 32, 32, 0.85);
+      border: 1px solid rgba(0,0,0,0.2);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--color-primary-dark);
+      position: relative;
+      padding-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--color-primary);
+      border-radius: 2px;
+      animation: expandLine 1.2s ease-out forwards;
+    }
+    @keyframes expandLine {
+      from { width: 0; }
+      to { width: 100px; }
+    }
+    
+    /* Onglets */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      position: relative;
+    }
+    .tabs::before {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 1px;
+    }
+    .tab-btn {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      background: rgba(212, 175, 55, 0.2);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .tab-btn.active {
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transform: translateY(-3px);
+    }
+    .tab-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .tab-btn:hover::before {
+      transform: translateX(100%);
+    }
+    .tab-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    /* Formulaires - CORRECTIONS APPORTÉES ICI */
+    .form-container {
+      position: relative;
+      min-height: 500px;
+      overflow: hidden;
+    }
+    .form-section {
+      position: relative;
+      width: 100%;
+      opacity: 1;
+      pointer-events: all;
+      transition: all 0.5s ease;
+    }
+    .form-section:not(.active) {
+      display: none;
+    }
+    
+    .form-group {
+      margin-bottom: 1.8rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      padding-left: 40px;
+      height: auto;
+      overflow: visible;
+    }
+    .form-group.show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    .form-group::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+    .form-group.valid::before {
+      background: #2ecc71;
+      content: "\f00c";
+    }
+    
+    /* Icônes spécifiques pour chaque champ */
+    .form-group[data-icon="user"]::before { content: "\f007"; }
+    .form-group[data-icon="calendar"]::before { content: "\f073"; }
+    .form-group[data-icon="id-card"]::before { content: "\f2c2"; }
+    .form-group[data-icon="school"]::before { content: "\f19d"; }
+    .form-group[data-icon="globe"]::before { content: "\f0ac"; }
+    .form-group[data-icon="phone"]::before { content: "\f095"; }
+    .form-group[data-icon="venus-mars"]::before { content: "\f228"; }
+    .form-group[data-icon="graduation-cap"]::before { content: "\f19d"; }
+    .form-group[data-icon="book"]::before { content: "\f02d"; }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      padding-left: 5px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.8);
+      color: var(--color-text);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+    body.dark input, body.dark select {
+      background: rgba(45,45,45,0.8);
+      border-color: #444;
+    }
+    input:focus, select:focus {
+      border-color: var(--color-primary);
+      box-shadow: var(--input-focus-glow);
+      outline: none;
+      transform: translateY(-2px);
+    }
+    input.invalid, select.invalid {
+      border-color: #e74c3c;
+    }
+    
+    .country-code {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .country-code select {
+      flex: 0 0 30%;
+    }
+    .country-code input {
+      flex: 1;
+    }
+    
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      background: rgba(212, 175, 55, 0.1);
+      transition: all 0.3s ease;
+    }
+    .radio-option:hover {
+      background: rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+    }
+    .radio-option input[type="radio"] {
+      width: auto;
+    }
+    
+    .btn-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .submit-btn {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+    .submit-btn.show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+    .submit-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .submit-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+    .submit-btn:hover::before {
+      transform: translateX(100%);
+    }
+    .submit-btn:disabled {
+      background: #ddd;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Drawer amélioré */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--color-text);
+      padding: 1.5rem;
+      backdrop-filter: blur(15px);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+      overflow-y: auto;
+    }
+    .drawer.open {
+      right: 0;
+    }
+    .drawer .section {
+      margin-bottom: 2rem;
+      padding: 1.2rem;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      animation: slideIn 0.6s forwards;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    .drawer .section:nth-child(1) { animation-delay: 0.1s; }
+    .drawer .section:nth-child(2) { animation-delay: 0.2s; }
+    .drawer .section:nth-child(3) { animation-delay: 0.3s; }
+    .drawer .section:nth-child(4) { animation-delay: 0.4s; }
+    
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .drawer h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--color-primary);
+    }
+    .drawer h3 i {
+      font-size: 1.4rem;
+      animation: pulse 2s infinite;
+    }
+    .drawer button {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      border: none;
+      padding: 0.8rem 1.5rem;
+      color: white;
+      border-radius: 50px;
+      margin-top: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .drawer button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .drawer ul {
+      list-style: none;
+      padding-left: 1.2rem;
+      font-size: 1rem;
+    }
+    .drawer ul li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .drawer ul li:hover {
+      transform: translateX(5px);
+      color: var(--color-primary);
+    }
+    .drawer .exit {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 1.5rem;
+    }
+    .drawer .exit button {
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .drawer .exit button:hover {
+      background: linear-gradient(45deg, #c0392b, #a5281b);
+    }
+    
+    /* Footer */
+    footer {
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100% 100%;
+      opacity: 0.2;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+    }
+    .footer-links a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+    footer p {
+      position: relative;
+      z-index: 2;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+    
+    /* Animations */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes iconPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .form-group.valid::before {
+      animation: iconPulse 0.6s ease;
+    }
+    
+    /* Progress bar */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      border-radius: 4px;
+      width: 0;
+      transition: width 0.5s ease;
+    }
+    
+    /* Floating elements */
+    .floating-element {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--color-primary);
+      opacity: 0.1;
+      z-index: -1;
+    }
+    .floating-element:nth-child(1) {
+      width: 120px;
+      height: 120px;
+      top: 10%;
+      left: -50px;
+      animation: float 15s infinite linear;
+    }
+    .floating-element:nth-child(2) {
+      width: 80px;
+      height: 80px;
+      bottom: 20%;
+      right: -30px;
+      animation: float 12s infinite linear reverse;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, 20px) rotate(90deg); }
+      50% { transform: translate(0, 40px) rotate(180deg); }
+      75% { transform: translate(-20px, 20px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+      .tab-btn {
+        width: 100%;
+        max-width: 300px;
+      }
+      .country-code {
+        flex-direction: column;
+      }
+      .drawer {
+        width: 100%;
+        max-width: 320px;
+      }
+      .form-group {
+        padding-left: 35px;
+      }
+      .form-group::before {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .container {
+        padding: 1rem;
+      }
+      .drawer {
+        width: 100%;
+        max-width: none;
+        right: -100%;
+      }
+      .drawer.open {
+        right: 0;
+      }
+      .form-group {
+        padding-left: 30px;
+      }
+      .form-group::before {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="particles-js"></div>
+<div id="page">
+  <header>
+    <div class="logo">
+      <i class="fas fa-brain"></i> IGETSENSE
+    </div>
+    <div class="profile-icon" onclick="toggleDrawer()">
+      
+     <p><center><i class="fas fa-cog"></i></center></p>
+    </div>
+  </header>
+  
+  <div class="container">
+    <h1 id="formTitle">Formulaire d'Inscription</h1>
+    
+    <div class="tabs">
+      <button class="tab-btn active" id="studentTab" onclick="showForm('student')">Étudiant</button>
+      <button class="tab-btn" id="pupilTab" onclick="showForm('pupil')">Élève</button>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="form-container">
+      <!-- Formulaire Étudiant -->
+      <form id="studentForm" class="form-section active">
+        <div class="form-group show" data-icon="user" id="studentLastNameGroup">
+          <label for="studentLastName">Nom</label>
+          <input type="text" id="studentLastName" required oninput="validateField(this, 'studentFirstNameGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="user" id="studentFirstNameGroup">
+          <label for="studentFirstName">Prénom</label>
+          <input type="text" id="studentFirstName" required oninput="validateField(this, 'studentDobGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="calendar" id="studentDobGroup">
+          <label for="studentDob">Date de Naissance</label>
+          <input type="date" id="studentDob" required oninput="validateField(this, 'studentMatriculeGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="id-card" id="studentMatriculeGroup">
+          <label for="studentMatricule">Matricule</label>
+          <input type="text" id="studentMatricule" required oninput="validateField(this, 'studentInstitutionGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="school" id="studentInstitutionGroup">
+          <label for="studentInstitution">Établissement</label>
+          <input type="text" id="studentInstitution" required oninput="validateField(this, 'studentCountryGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="globe" id="studentCountryGroup">
+          <label for="studentCountry">Pays</label>
+          <select id="studentCountry" required onchange="updatePhonePrefix('student'); validateField(this, 'studentPhoneGroup')">
+            <option value="">Sélectionnez un pays</option>
+            <option value="cm">Cameroun (+237)</option>
+            <option value="fr">France (+33)</option>
+            <option value="ci">Côte d'Ivoire (+225)</option>
+            <option value="sn">Sénégal (+221)</option>
+            <option value="tg">Togo (+228)</option>
+          </select>
+        </div>
+        
+        <div class="form-group" data-icon="phone" id="studentPhoneGroup">
+          <label for="studentPhone">Numéro de Téléphone</label>
+          <div class="country-code">
+            <select id="studentPrefix" disabled>
+              <option value="+237">+237</option>
+            </select>
+            <input type="tel" id="studentPhone" placeholder="6XX XXX XXX" required oninput="validateField(this, 'studentGenderGroup')">
+          </div>
+        </div>
+        
+        <div class="form-group" data-icon="venus-mars" id="studentGenderGroup">
+          <label>Sexe</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="studentMale" name="studentGender" value="male" required onchange="validateField(this, 'studentSubmitGroup')">
+              <label for="studentMale">Masculin</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="studentFemale" name="studentGender" value="female" onchange="validateField(this, 'studentSubmitGroup')">
+              <label for="studentFemale">Féminin</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-container">
+          <button type="submit" class="submit-btn" id="studentSubmit" disabled>Envoyer</button>
+        </div>
+      </form>
+      
+      <!-- Formulaire Élève -->
+      <form id="pupilForm" class="form-section">
+        <div class="form-group show" data-icon="user" id="pupilLastNameGroup">
+          <label for="pupilLastName">Nom</label>
+          <input type="text" id="pupilLastName" required oninput="validateField(this, 'pupilFirstNameGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="user" id="pupilFirstNameGroup">
+          <label for="pupilFirstName">Prénom</label>
+          <input type="text" id="pupilFirstName" required oninput="validateField(this, 'pupilClassGroup')">
+        </div>
+        
+        <div class="form-group" data-icon="graduation-cap" id="pupilClassGroup">
+          <label for="pupilClass">Classe</label>
+          <input type="text" id="pupilClass" placeholder="Ex: 6e, Terminale C" required oninput="validateClass(); validateField(this, 'pupilCountryGroup')">
+          <small id="classHelp" style="display: block; margin-top: 0.3rem; color: #666;"></small>
+        </div>
+        
+        <div class="form-group" data-icon="globe" id="pupilCountryGroup">
+          <label for="pupilCountry">Pays</label>
+          <select id="pupilCountry" required onchange="updatePhonePrefix('pupil'); validateField(this, 'pupilPhoneGroup')">
+            <option value="">Sélectionnez un pays</option>
+            <option value="cm">Cameroun (+237)</option>
+            <option value="fr">France (+33)</option>
+            <option value="ci">Côte d'Ivoire (+225)</option>
+            <option value="sn">Sénégal (+221)</option>
+            <option value="tg">Togo (+228)</option>
+          </select>
+        </div>
+        
+        <div class="form-group" data-icon="phone" id="pupilPhoneGroup">
+          <label for="pupilPhone">Contact</label>
+          <div class="country-code">
+            <select id="pupilPrefix" disabled>
+              <option value="+237">+237</option>
+            </select>
+            <input type="tel" id="pupilPhone" placeholder="6XX XXX XXX" required oninput="validateField(this, 'pupilStudyTypeGroup')">
+          </div>
+        </div>
+        
+        <div class="form-group" data-icon="book" id="pupilStudyTypeGroup">
+          <label>Type d'Étude</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="pupilGeneral" name="pupilStudyType" value="general" required onchange="validateField(this, 'pupilSubmitGroup')">
+              <label for="pupilGeneral">Générale</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="pupilTechnical" name="pupilStudyType" value="technical" onchange="validateField(this, 'pupilSubmitGroup')">
+              <label for="pupilTechnical">Technique</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-container">
+          <button type="submit" class="submit-btn" id="pupilSubmit" disabled>Envoyer</button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
+  
+  <footer>
+    <div class="footer-links">
+      <a href="#" onclick="window.location.href='index.html'">Accueil</a>
+      <a href="#">À propos</a>
+      <a href="#">Contact</a>
+      <a href="#">FAQ</a>
+    </div>
+    <p>&copy; 2025 iGetSense. Tous droits réservés.</p>
+  </footer>
+</div>
+<div class="drawer" id="drawer">
+  <div>
+    <div class="section">
+      <h3><i class="fas fa-language"></i> Langue</h3>
+      <button onclick="switchLang()"><i class="fas fa-globe-americas"></i> Changer de langue</button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3><i class="fas fa-moon"></i> Thème</h3>
+      <button onclick="toggleTheme()"><i class="fas fa-adjust"></i> Changer le thème</button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3><i class="fas fa-cog"></i> Paramètres</h3>
+      <p>Personnalisez votre expérience</p>
+    </div>
+  </div>
+  <div class="exit">
+    <button onclick="toggleDrawer()"><i class="fas fa-times"></i> Fermer</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  // Initialisation des particules
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#d4af37" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      move: { 
+        enable: true, 
+        speed: 1.5,
+        direction: "none",
+        random: true,
+        out_mode: "out",
+        bounce: false
+      }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { 
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" }
+      },
+      modes: { 
+        repulse: { distance: 100, duration: 0.4 },
+        push: { particles_nb: 4 }
+      }
+    }
+  });
+
+  // Variables globales
+  let currentForm = 'student';
+  let currentLang = 'fr';
+  
+  // Fonction pour changer le formulaire affiché
+  function showForm(formType) {
+    if (formType === currentForm) return;
+    
+    // Mettre à jour les onglets
+    document.getElementById('studentTab').classList.remove('active');
+    document.getElementById('pupilTab').classList.remove('active');
+    document.getElementById(`${formType}Tab`).classList.add('active');
+    
+    // Masquer le formulaire actuel
+    document.querySelector(`.form-section.active`).classList.remove('active');
+    
+    // Afficher le nouveau formulaire
+    document.getElementById(`${formType}Form`).classList.add('active');
+    
+    // Réinitialiser les animations des champs
+    resetFormAnimations(formType);
+    
+    currentForm = formType;
+  }
+  
+  // Réinitialiser les animations des champs
+  function resetFormAnimations(formType) {
+    const formGroups = document.querySelectorAll(`#${formType}Form .form-group`);
+    formGroups.forEach((group, index) => {
+      if (index > 0) {
+        group.classList.remove('show');
+        group.classList.remove('valid');
+      }
+    });
+    
+    // Réinitialiser la barre de progression
+    document.getElementById('progressBar').style.width = '0%';
+    
+    // Afficher le premier champ immédiatement
+    formGroups[0].classList.add('show');
+    
+    // Désactiver le bouton d'envoi
+    document.getElementById(`${formType}Submit`).disabled = true;
+  }
+  
+  // Valider un champ et afficher le suivant
+  function validateField(field, nextGroupId) {
+    const formType = field.closest('.form-section').id.replace('Form', '');
+    const group = field.closest('.form-group');
+    
+    // Marquer comme valide
+    if (field.value) {
+      group.classList.add('valid');
+    } else {
+      group.classList.remove('valid');
+    }
+    
+    // Afficher le groupe suivant s'il est valide
+    if (field.value && nextGroupId) {
+      const nextGroup = document.getElementById(nextGroupId);
+      if (nextGroup) {
+        nextGroup.classList.add('show');
+      }
+    }
+    
+    // Mettre à jour la barre de progression
+    updateProgressBar(formType);
+    
+    // Valider le formulaire complet
+    validateForm(formType);
+  }
+  
+  // Mettre à jour la barre de progression
+  function updateProgressBar(formType) {
+    const form = document.getElementById(`${formType}Form`);
+    const inputs = form.querySelectorAll('input, select');
+    let filledCount = 0;
+    
+    inputs.forEach(input => {
+      if (input.value) filledCount++;
+    });
+    
+    const progress = (filledCount / inputs.length) * 100;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+  }
+  
+  // Mettre à jour le préfixe téléphonique selon le pays
+  function updatePhonePrefix(formType) {
+    const countrySelect = document.getElementById(`${formType}Country`);
+    const prefixSelect = document.getElementById(`${formType}Prefix`);
+    const phoneInput = document.getElementById(`${formType}Phone`);
+    
+    const prefixes = {
+      'cm': '+237',
+      'fr': '+33',
+      'ci': '+225',
+      'sn': '+221',
+      'tg': '+228'
+    };
+    
+    if (countrySelect.value && prefixes[countrySelect.value]) {
+      prefixSelect.value = prefixes[countrySelect.value];
+      
+      // Mettre à jour le placeholder selon le pays
+      if (countrySelect.value === 'cm') {
+        phoneInput.placeholder = '6XX XXX XXX';
+      } else if (countrySelect.value === 'fr') {
+        phoneInput.placeholder = '6 XX XX XX XX';
+      } else {
+        phoneInput.placeholder = 'Numéro de téléphone';
+      }
+    }
+    
+    validateForm(formType);
+  }
+  
+  // Valider la classe pour le formulaire élève
+  function validateClass() {
+    const classInput = document.getElementById('pupilClass');
+    const classHelp = document.getElementById('classHelp');
+    
+    const validClasses = [
+      '6e', '5e', '4e', '3e', '2nd', '1ère', 'Terminale',
+      '6ème', '5ème', '4ème', '3ème', 'Seconde', 'Première', 'Terminale'
+    ];
+    
+    const classValue = classInput.value.trim();
+    
+    if (!classValue) {
+      classHelp.textContent = '';
+      return false;
+    }
+    
+    // Vérifier si la classe est valide
+    const isValid = validClasses.some(cls => 
+      classValue.toLowerCase().includes(cls.toLowerCase())
+    );
+    
+    if (isValid) {
+      classInput.classList.remove('invalid');
+      classHelp.textContent = 'Classe valide';
+      classHelp.style.color = '#2ecc71';
+    } else {
+      classInput.classList.add('invalid');
+      classHelp.textContent = 'Classe invalide. Exemples: 6e, Terminale C';
+      classHelp.style.color = '#e74c3c';
+    }
+    
+    return isValid;
+  }
+  
+  // Valider le formulaire
+  function validateForm(formType) {
+    const form = document.getElementById(`${formType}Form`);
+    const inputs = form.querySelectorAll('input, select');
+    let isValid = true;
+    
+    // Valider tous les champs
+    inputs.forEach(input => {
+      if (input.required && !input.value) {
+        isValid = false;
+      }
+      
+      // Vérifier les champs spécifiques invalides
+      if (input.classList.contains('invalid')) {
+        isValid = false;
+      }
+    });
+    
+    // Validation spécifique pour élève
+    if (formType === 'pupil') {
+      isValid = isValid && validateClass();
+    }
+    
+    // Activer/désactiver le bouton d'envoi
+    const submitBtn = document.getElementById(`${formType}Submit`);
+    submitBtn.disabled = !isValid;
+    
+    // Afficher le bouton d'envoi s'il est activé
+    if (isValid) {
+      submitBtn.classList.add('show');
+    } else {
+      submitBtn.classList.remove('show');
+    }
+    
+    return isValid;
+  }
+  
+  // Soumettre le formulaire
+  function submitForm(formType, event) {
+    event.preventDefault();
+    
+    if (validateForm(formType)) {
+      // Animation de succès
+      const submitBtn = document.getElementById(`${formType}Submit`);
+      submitBtn.innerHTML = '<i class="fas fa-check"></i> Envoyé !';
+      submitBtn.style.background = '#2ecc71';
+      submitBtn.style.background = 'linear-gradient(to right, #2ecc71, #27ae60)';
+      
+      // Redirection après délai
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+  }
+  
+  // Fonction pour le tiroir de profil
+  function toggleDrawer() {
+    document.getElementById('drawer').classList.toggle('open');
+  }
+  
+  // Fonction pour changer le thème
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+    
+    // Stocker la préférence de thème
+    const isDarkMode = document.body.classList.contains('dark');
+    localStorage.setItem('darkMode', isDarkMode);
+  }
+  
+  // Fonction pour changer la langue
+  function switchLang() {
+    const texts = {
+      fr: {
+        formTitle: "Formulaire d'Inscription",
+        studentTab: "Étudiant",
+        pupilTab: "Élève",
+        studentLastName: "Nom",
+        studentFirstName: "Prénom",
+        studentDob: "Date de Naissance",
+        studentMatricule: "Matricule",
+        studentInstitution: "Établissement",
+        studentCountry: "Pays",
+        studentPhone: "Numéro de Téléphone",
+        studentGender: "Sexe",
+        studentMale: "Masculin",
+        studentFemale: "Féminin",
+        pupilLastName: "Nom",
+        pupilFirstName: "Prénom",
+        pupilClass: "Classe",
+        pupilCountry: "Pays",
+        pupilPhone: "Contact",
+        pupilStudyType: "Type d'Étude",
+        pupilGeneral: "Générale",
+        pupilTechnical: "Technique",
+        submit: "Envoyer",
+        classHelp: "Exemples: 6e, Terminale C",
+        drawerLang: "Langue",
+        drawerTheme: "Thème",
+        drawerSettings: "Paramètres",
+        drawerClose: "Fermer"
+      },
+      en: {
+        formTitle: "Registration Form",
+        studentTab: "Student",
+        pupilTab: "Pupil",
+        studentLastName: "Last Name",
+        studentFirstName: "First Name",
+        studentDob: "Date of Birth",
+        studentMatricule: "Matriculation Number",
+        studentInstitution: "Institution",
+        studentCountry: "Country",
+        studentPhone: "Phone Number",
+        studentGender: "Gender",
+        studentMale: "Male",
+        studentFemale: "Female",
+        pupilLastName: "Last Name",
+        pupilFirstName: "First Name",
+        pupilClass: "Class",
+        pupilCountry: "Country",
+        pupilPhone: "Contact",
+        pupilStudyType: "Study Type",
+        pupilGeneral: "General",
+        pupilTechnical: "Technical",
+        submit: "Submit",
+        classHelp: "Examples: 6th grade, Terminal C",
+        drawerLang: "Language",
+        drawerTheme: "Theme",
+        drawerSettings: "Settings",
+        drawerClose: "Close"
+      }
+    };
+
+    currentLang = (currentLang === 'fr') ? 'en' : 'fr';
+    const t = texts[currentLang];
+
+    // Mettre à jour les textes
+    document.getElementById('formTitle').textContent = t.formTitle;
+    document.getElementById('studentTab').textContent = t.studentTab;
+    document.getElementById('pupilTab').textContent = t.pupilTab;
+    
+    // Mise à jour des labels du formulaire étudiant
+    document.querySelector('label[for="studentLastName"]').textContent = t.studentLastName;
+    document.querySelector('label[for="studentFirstName"]').textContent = t.studentFirstName;
+    document.querySelector('label[for="studentDob"]').textContent = t.studentDob;
+    document.querySelector('label[for="studentMatricule"]').textContent = t.studentMatricule;
+    document.querySelector('label[for="studentInstitution"]').textContent = t.studentInstitution;
+    document.querySelector('label[for="studentCountry"]').textContent = t.studentCountry;
+    document.querySelector('label[for="studentPhone"]').textContent = t.studentPhone;
+    document.querySelector('label[for="studentMale"]').textContent = t.studentMale;
+    document.querySelector('label[for="studentFemale"]').textContent = t.studentFemale;
+    document.querySelector('#studentSubmit').textContent = t.submit;
+    
+    // Mise à jour des labels du formulaire élève
+    document.querySelector('label[for="pupilLastName"]').textContent = t.pupilLastName;
+    document.querySelector('label[for="pupilFirstName"]').textContent = t.pupilFirstName;
+    document.querySelector('label[for="pupilClass"]').textContent = t.pupilClass;
+    document.querySelector('label[for="pupilCountry"]').textContent = t.pupilCountry;
+    document.querySelector('label[for="pupilPhone"]').textContent = t.pupilPhone;
+    document.querySelector('label[for="pupilGeneral"]').textContent = t.pupilGeneral;
+    document.querySelector('label[for="pupilTechnical"]').textContent = t.pupilTechnical;
+    document.querySelector('#pupilSubmit').textContent = t.submit;
+    document.getElementById('classHelp').textContent = t.classHelp;
+    
+    // Mise à jour du drawer
+    document.querySelector('#drawer h3:nth-of-type(1)').innerHTML = `<i class="fas fa-language"></i> ${t.drawerLang}`;
+    document.querySelector('#drawer h3:nth-of-type(2)').innerHTML = `<i class="fas fa-moon"></i> ${t.drawerTheme}`;
+    document.querySelector('#drawer h3:nth-of-type(3)').innerHTML = `<i class="fas fa-cog"></i> ${t.drawerSettings}`;
+    document.querySelector('.drawer .exit button').innerHTML = `<i class="fas fa-times"></i> ${t.drawerClose}`;
+  }
+  
+  // Initialisation au chargement de la page
+  document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier la préférence de thème
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+    }
+    
+    // Configurer les écouteurs d'événements
+    document.getElementById('studentForm').addEventListener('submit', (e) => submitForm('student', e));
+    document.getElementById('pupilForm').addEventListener('submit', (e) => submitForm('pupil', e));
+    
+    // Valider au fur et à mesure
+    const studentInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+    studentInputs.forEach(input => {
+      input.addEventListener('input', () => validateForm('student'));
+    });
+    
+    const pupilInputs = document.querySelectorAll('#pupilForm input, #pupilForm select');
+    pupilInputs.forEach(input => {
+      if (input.id === 'pupilClass') {
+        input.addEventListener('input', validateClass);
+      }
+      input.addEventListener('input', () => validateForm('pupil'));
+    });
+    
+    // Afficher progressivement le premier champ
+    setTimeout(() => {
+      document.querySelector('#studentForm .form-group').classList.add('show');
+      document.querySelector('#pupilForm .form-group').classList.add('show');
+    }, 500);
+  });
+</script>
+</body>
+</html>

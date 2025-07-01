@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iGetSense - Plateforme Éducative Innovante</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root {
+      --color-primary: #d4af37;
+      --color-primary-dark: #b8860b;
+      --color-bg: #fafafa;
+      --color-text: #222;
+      --transition: 0.3s;
+      --nav-height: 70px;
+    }
+    body.dark {
+      --color-bg: #121212;
+      --color-text: #f0f0f0;
+      --color-primary: #ffc107;
+      --color-primary-dark: #ff9800;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    #page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+      padding-top: var(--nav-height); /* Espace pour la navbar fixe */
+    }
+
+    /* Header et navigation améliorés - RESTE FIXE */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      height: var(--nav-height);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 101;
+    }
+    .nav-toggle:hover {
+      transform: rotate(90deg);
+    }
+
+    .navbar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    /* Animation des éléments de navigation */
+    .nav-item {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .nav-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .nav-item:hover::before, .nav-item.active::before {
+      transform: translateX(100%);
+    }
+
+    /* Animations spécifiques pour chaque icône */
+    .nav-item i {
+      font-size: 1.3rem;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .nav-item:nth-child(1) i:hover {
+      animation: bounce 0.8s ease infinite;
+      color: #ff9a00;
+    }
+    .nav-item:nth-child(2) i:hover {
+      animation: pulse 1s ease infinite;
+      color: #ffea00;
+    }
+    .nav-item:nth-child(3) i:hover {
+      animation: shake 0.5s ease infinite;
+      color: #4caf50;
+    }
+    .nav-item:nth-child(4) i:hover {
+      animation: float 2s ease-in-out infinite;
+      color: #2196f3;
+    }
+    .nav-item:nth-child(5) i:hover {
+      animation: spin 1.5s linear infinite;
+      color: #e91e63;
+    }
+
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 99999;
+      background-color: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(2px);
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Effets d'eau */
+    .water-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .water-wave {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path fill="rgba(212,175,55,0.15)" d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"/></svg>');
+      background-repeat: repeat-x;
+      background-size: 50% 100%;
+      animation: wave 15s linear infinite;
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(-25%) translateY(-10px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    .water-drops {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop {
+      position: absolute;
+      background: rgba(212, 175, 55, 0.3);
+      border-radius: 50%;
+      animation: dropFall linear infinite;
+      filter: blur(1px);
+    }
+
+    @keyframes dropFall {
+      0% {
+        transform: translateY(-100px) scale(0.5);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(100vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Contenu */
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 30px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+    }
+
+    .logo-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(0,0,0,0) 70%);
+      border-radius: 50%;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+    }
+
+    .splash-text {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #d4af37;
+      text-align: center;
+      position: relative;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+    }
+
+    .splash-text .text-part {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .splash-text .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 40px;
+      background: #d4af37;
+      margin-left: 5px;
+      animation: blink 0.8s step-end infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      from, to { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .loading-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loading-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d4af37 0%, #f9e076 100%);
+      transition: width 0.4s ease;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .logo-container {
+        width: 150px;
+        height: 150px;
+      }
+
+      .splash-text {
+        font-size: 2.2rem;
+      }
+
+      .loading-bar {
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo-container {
+        width: 120px;
+        height: 120px;
+      }
+
+      .splash-text {
+        font-size: 1.8rem;
+      }
+
+      .loading-bar {
+        width: 200px;
+      }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    @keyframes shake {
+      0% { transform: rotate(0); }
+      25% { transform: rotate(10deg); }
+      50% { transform: rotate(0); }
+      75% { transform: rotate(-10deg); }
+      100% { transform: rotate(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .profile-icon {
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      border: 2px solid white;
+      border-radius: 50%;
+      padding: 2px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .profile-icon:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 0.5s ease;
+    }
+    .profile-icon:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Drawer amélioré */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--color-text);
+      padding: 1.5rem;
+      backdrop-filter: blur(15px);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+      overflow-y: auto;
+    }
+    .drawer.open {
+      right: 0;
+    }
+    .drawer .section {
+      margin-bottom: 2rem;
+      padding: 1.2rem;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      animation: slideIn 0.6s forwards;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    .drawer .section:nth-child(1) { animation-delay: 0.1s; }
+    .drawer .section:nth-child(2) { animation-delay: 0.2s; }
+    .drawer .section:nth-child(3) { animation-delay: 0.3s; }
+    .drawer .section:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .drawer h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--color-primary);
+    }
+    .drawer h3 i {
+      font-size: 1.4rem;
+      animation: pulse 2s infinite;
+    }
+    .drawer button {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      border: none;
+      padding: 0.8rem 1.5rem;
+      color: white;
+      border-radius: 50px;
+      margin-top: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .drawer button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .drawer ul {
+      list-style: none;
+      padding-left: 1.2rem;
+      font-size: 1rem;
+    }
+    .drawer ul li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .drawer ul li:hover {
+      transform: translateX(5px);
+      color: var(--color-primary);
+    }
+    .drawer .exit {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 1.5rem;
+    }
+    .drawer .exit button {
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .drawer .exit button:hover {
+      background: linear-gradient(45deg, #c0392b, #a5281b);
+    }
+
+    /* Section Hero améliorée */
+    .hero {
+      max-width: 85%;
+      margin: 3rem auto;
+      text-align: center;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 1s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0; /* Initialement caché */
+      transform: translateY(30px); /* Position de départ pour l'animation */
+    }
+    body.dark .hero {
+      background: rgba(32, 32, 32, 0.85);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+      animation: shine 8s infinite;
+      z-index: -1;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary-dark);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      animation: textGlow 3s infinite alternate;
+    }
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
+      100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); }
+    }
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-btn {
+      padding: 1.2rem 2.5rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .cta-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+    .cta-btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    /* Sections de contenu - Animations d'apparition */
+    .content-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      opacity: 0; /* Initialement caché */
+      transform: translateY(40px); /* Position de départ pour l'animation */
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    body.dark .content-section {
+      background: rgba(32, 32, 32, 0.85);
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--color-primary-dark);
+      position: relative;
+      padding-bottom: 1rem;
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--color-primary);
+      border-radius: 2px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    body.dark .feature-card {
+      background: rgba(45, 45, 45, 0.9);
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .feature-icon {
+      font-size: 3rem;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover .feature-icon {
+      transform: scale(1.2);
+    }
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      color: var(--color-primary-dark);
+    }
+
+    /* Footer amélioré */
+    footer {
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100% 100%;
+      opacity: 0.2;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+    }
+    .footer-links a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+    footer p {
+      position: relative;
+      z-index: 2;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Barre de défilement personnalisée */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(212, 175, 55, 0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-primary-dark);
+    }
+
+    /* Classe pour afficher les éléments animés */
+    .show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 992px) {
+      .navbar {
+        gap: 1rem;
+      }
+      .nav-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+      }
+      h1 {
+        font-size: 2.4rem;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .navbar {
+        display: none;
+        flex-direction: column;
+        background: var(--color-primary-dark);
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        height: calc(100vh - var(--nav-height));
+        padding: 2rem;
+        z-index: 99;
+        justify-content: flex-start;
+        gap: 1.5rem;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+      .navbar.open {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .nav-toggle {
+        display: block;
+        position: relative;
+        z-index: 100;
+      }
+      .nav-item {
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1.1rem;
+      }
+      .hero {
+        padding: 2rem 1.5rem;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+      .drawer {
+        width: 100%;
+        max-width: 320px;
+      }
+      .content-section {
+        padding: 1.5rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .logo {
+        font-size: 1.5rem;
+      }
+      .hero {
+        padding: 1.5rem 1rem;
+        margin: 1.5rem auto;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .cta-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+      }
+      .footer-links {
+        gap: 1rem;
+      }
+      .footer-links a {
+        font-size: 0.95rem;
+      }
+      .drawer {
+        width: 100%;
+        max-width: none;
+        right: -100%;
+      }
+      .drawer.open {
+        right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="particles-js"></div>
+<div id="page">
+  <header>
+    <div class="logo" id="logoText">
+      <i class="fas fa-brain"></i> IGETSENSE
+    </div>
+    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+    <nav class="navbar" id="navBar">
+      <!-- Liens modifiés pour pointer vers d'autres fichiers HTML -->
+      <a href="index.html" class="nav-item active"><i class="fas fa-home"></i> <span class="nav-text">Accueil</span></a>
+      <a href="quiz.html" class="nav-item"><i class="fas fa-lightbulb"></i> <span class="nav-text">Quiz</span></a>
+      <a href="epreuves.html" class="nav-item"><i class="fas fa-clipboard-list"></i> <span class="nav-text">Anciennes Épreuves</span></a>
+      <a href="cours.html" class="nav-item"><i class="fas fa-graduation-cap"></i> <span class="nav-text">Cours en ligne</span></a>
+      <a href="visuel.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span class="nav-text">Cours en visuel</span></a>
+    </nav>
+    <div class="profile-icon" onclick="toggleDrawer()">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Profil">
+    </div>
+  </header>
+
+  <section class="hero" id="accueil">
+    <h1 id="heroTitle">Bienvenue sur iGetSense</h1>
+    <p id="heroDesc">Une plateforme éducative innovante qui transforme l'apprentissage en une expérience captivante et interactive pour les élèves et étudiants du futur.</p>
+    <button class="cta-btn" onclick="location.href='formulaire.html'" id="startBtn">Commencer l'aventure</button>
+  </section>
+
+  <section class="content-section" id="quiz">
+    <h2 class="section-title" id="quizTitle">Quiz Interactifs</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <h3 id="quizCard1Title">Quiz Personnalisés</h3>
+        <p id="quizCard1Desc">Testez vos connaissances avec nos quiz adaptés à votre niveau d'étude et à vos progrès.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <h3 id="quizCard2Title">Classements</h3>
+        <p id="quizCard2Desc">Défiez vos amis et montez dans les classements pour devenir le meilleur.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3 id="quizCard3Title">Suivi des Progrès</h3>
+        <p id="quizCard3Desc">Visualisez vos résultats et vos progrès au fil du temps.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="epreuves">
+    <h2 class="section-title" id="epreuvesTitle">Anciennes Épreuves</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <h3 id="epreuvesCard1Title">Archives Complètes</h3>
+        <p id="epreuvesCard1Desc">Accédez à une collection exhaustive d'anciennes épreuves classées par matière et par niveau.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-file-pdf"></i>
+        </div>
+        <h3 id="epreuvesCard2Title">Téléchargements</h3>
+        <p id="epreuvesCard2Desc">Téléchargez les épreuves au format PDF pour les consulter hors ligne.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-check-double"></i>
+        </div>
+        <h3 id="epreuvesCard3Title">Corrigés Détaillés</h3>
+        <p id="epreuvesCard3Desc">Bénéficiez de corrigés détaillés avec explications pour chaque question.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="cours">
+    <h2 class="section-title" id="coursTitle">Cours en Ligne</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-laptop"></i>
+        </div>
+        <h3 id="coursCard1Title">Cours Complets</h3>
+        <p id="coursCard1Desc">Des cours complets et structurés couvrant tous les programmes officiels.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3 id="coursCard2Title">Ressources Complémentaires</h3>
+        <p id="coursCard2Desc">Exercices, fiches de révision et ressources supplémentaires pour approfondir.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-comments"></i>
+        </div>
+        <h3 id="coursCard3Title">Forums d'Entraide</h3>
+        <p id="coursCard3Desc">Posez vos questions et obtenez de l'aide de la communauté et des enseignants.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="visuel">
+    <h2 class="section-title" id="visuelTitle">Cours en Visuel</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <h3 id="visuelCard1Title">Vidéos Pédagogiques</h3>
+        <p id="visuelCard1Desc">Des centaines de vidéos explicatives pour comprendre les concepts complexes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chalkboard"></i>
+        </div>
+        <h3 id="visuelCard2Title">Tableaux Interactifs</h3>
+        <p id="visuelCard2Desc">Tableaux blancs interactifs pour suivre les démonstrations en temps réel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-microphone-alt"></i>
+        </div>
+        <h3 id="visuelCard3Title">Podcasts Éducatifs</h3>
+        <p id="visuelCard3Desc">Apprenez où que vous soyez avec nos podcasts téléchargeables.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#" id="footerAbout">À propos</a>
+      <a href="#" id="footerContact">Contact</a>
+      <a href="#" id="footerFAQ">FAQ</a>
+      <a href="#" id="footerLegal">Mentions légales</a>
+    </div>
+    <p id="footerCopyright">&copy; 2025 iGetSense. Tous droits réservés.</p>
+  </footer>
+</div>
+<div class="drawer" id="drawer">
+  <div>
+    <div class="section">
+      <h3 id="drawerNotifications"><i class="fas fa-bell"></i> Notifications <span class="badge" id="notifCount">3</span></h3>
+      <ul id="notifList">
+        <li id="notif1"><i class="fas fa-check-circle"></i> Nouveau cours disponible</li>
+        <li id="notif2"><i class="fas fa-calendar-alt"></i> Rappel : Test jeudi</li>
+        <li id="notif3"><i class="fas fa-rocket"></i> Mise à jour de la plateforme</li>
+      </ul>
+      <button onclick="clearNotifications()" id="clearNotifBtn"><i class="fas fa-trash"></i> Supprimer les notifications</button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerLang"><i class="fas fa-language"></i> Langue</h3>
+      <button onclick="switchLang()" id="switchLangBtn"><i class="fas fa-globe-americas"></i> Changer de langue</button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerTheme"><i class="fas fa-moon"></i> Thème</h3>
+      <button onclick="toggleTheme()" id="toggleThemeBtn"><i class="fas fa-adjust"></i> Changer le thème</button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerProfile"><i class="fas fa-user-graduate"></i> Mon Profil</h3>
+      <p><i class="fas fa-school"></i> <span id="profileSchool">Lycée Tech Douala</span></p>
+      <p><i class="fas fa-envelope"></i> <span id="profileEmail">jean@getsense.com</span></p>
+      <p><i class="fas fa-phone"></i> <span id="profilePhone">+237 650 00 00</span></p>
+    </div>
+  </div>
+  <div class="exit">
+    <button onclick="toggleDrawer()" id="closeDrawerBtn"><i class="fas fa-times"></i> Fermer</button>
+  </div>
+</div>
+<!-- Écran de chargement transparent avec effets d'eau -->
+<div id="splash-screen">
+  <div class="water-container">
+    <div class="water-wave"></div>
+    <div class="water-drops" id="waterDrops"></div>
+  </div>
+
+  <div class="splash-content">
+    <div class="logo-container">
+      <!-- Logo noir avec effets or - remplacer par votre logo -->
+      <img src="JO.jpeg" alt="iGetSense" class="logo-img">
+      <div class="logo-glow"></div>
+    </div>
+
+    <div class="splash-text">
+      <span id="animated-text" class="text-part"></span>
+      <span class="cursor"></span>
+    </div>
+
+    <div class="loading-bar">
+      <div class="loading-progress" id="loading-progress"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  // Initialisation de l'animation
+  document.addEventListener('DOMContentLoaded', function() {
+    const splashScreen = document.getElementById('splash-screen');
+    const animatedText = document.getElementById('animated-text');
+    const loadingProgress = document.getElementById('loading-progress');
+    const waterDrops = document.getElementById('waterDrops');
+    const logoText = "iGetSense";
+    let charIndex = 0;
+
+    // Créer des gouttes d'eau
+    function createWaterDrops() {
+      for (let i = 0; i < 30; i++) {
+        const drop = document.createElement('div');
+        drop.classList.add('drop');
+
+        // Propriétés aléatoires
+        const size = Math.random() * 10 + 5;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 5 + 5;
+
+        drop.style.width = `${size}px`;
+        drop.style.height = `${size}px`;
+        drop.style.left = `${left}%`;
+        drop.style.animationDelay = `${delay}s`;
+        drop.style.animationDuration = `${duration}s`;
+
+        waterDrops.appendChild(drop);
+      }
+    }
+
+    createWaterDrops();
+
+    // Animation d'écriture
+    const typeWriter = setInterval(() => {
+      if (charIndex < logoText.length) {
+        animatedText.textContent += logoText.charAt(charIndex);
+        loadingProgress.style.width = `${((charIndex + 1) / logoText.length) * 100}%`;
+        charIndex++;
+      } else {
+        clearInterval(typeWriter);
+
+        // Disparition après un délai
+        setTimeout(() => {
+          splashScreen.classList.add('hidden');
+
+          // Retirer complètement après l'animation
+          setTimeout(() => {
+            splashScreen.style.display = 'none';
+          }, 1000);
+        }, 1000);
+      }
+    }, 150);
+
+    // Effet de scintillement aléatoire sur le logo
+    setInterval(() => {
+      const logoGlow = document.querySelector('.logo-glow');
+      logoGlow.style.boxShadow = `0 0 ${Math.random() * 30 + 10}px rgba(212, 175, 55, ${Math.random() * 0.5 + 0.3})`;
+    }, 2000);
+  });
+
+  // Configuration des particules
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 100 },
+      color: { value: "#d4af37" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      move: {
+        enable: true,
+        speed: 1.5,
+        direction: "none",
+        random: true,
+        out_mode: "out",
+        bounce: false
+      }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: {
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" }
+      },
+      modes: {
+        repulse: { distance: 100, duration: 0.4 },
+        push: { particles_nb: 4 }
+      }
+    }
+  });
+
+  // Fonctions pour la navigation
+  function toggleNav() {
+    const navBar = document.getElementById('navBar');
+    const navToggle = document.getElementById('navToggle');
+
+    navBar.classList.toggle('open');
+
+    // Changer l'icône du bouton
+    if (navBar.classList.contains('open')) {
+      navToggle.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+      navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  }
+
+  document.getElementById('navToggle').addEventListener('click', toggleNav);
+
+  // Fonction pour le tiroir de profil
+  function toggleDrawer() {
+    document.getElementById('drawer').classList.toggle('open');
+  }
+
+  // Fonction pour changer le thème
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+
+    // Stocker la préférence de thème
+    const isDarkMode = document.body.classList.contains('dark');
+    localStorage.setItem('darkMode', isDarkMode);
+  }
+
+  // Vérifier la préférence de thème au chargement
+  document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+    }
+
+    // Fermer la navigation mobile si un lien est cliqué
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          toggleNav();
+        }
+      });
+    });
+
+    // Animation d'apparition des sections
+    const heroSection = document.querySelector('.hero');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    // Afficher la section hero après un court délai
+    setTimeout(() => {
+      heroSection.classList.add('show');
+    }, 300);
+
+    // Configuration de l'Intersection Observer pour les sections de contenu
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15 // Déclenche lorsque 15% de l'élément est visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observer chaque section de contenu
+    contentSections.forEach(section => {
+      observer.observe(section);
+    });
+  });
+
+  // Fonction pour changer la langue - Version complète
+  let currentLang = 'fr';
+
+  function switchLang() {
+    const texts = {
+      fr: {
+        // Header
+        logoText: "IGETSENSE",
+
+        // Navigation
+        navAccueil: "Accueil",
+        navQuiz: "Quiz",
+        navAncienne: "Anciennes Épreuves",
+        navCoursLigne: "Cours en ligne",
+        navCoursVisuel: "Cours en visuel",
+
+        // Hero section
+        heroTitle: "Bienvenue sur iGetSense",
+        heroDesc: "Une plateforme éducative innovante qui transforme l'apprentissage en une expérience captivante et interactive pour les élèves et étudiants du futur.",
+        startBtn: "Commencer l'aventure",
+
+        // Sections
+        quizTitle: "Quiz Interactifs",
+        quizCard1Title: "Quiz Personnalisés",
+        quizCard1Desc: "Testez vos connaissances avec nos quiz adaptés à votre niveau d'étude et à vos progrès.",
+        quizCard2Title: "Classements",
+        quizCard2Desc: "Défiez vos amis et montez dans les classements pour devenir le meilleur.",
+        quizCard3Title: "Suivi des Progrès",
+        quizCard3Desc: "Visualisez vos résultats et vos progrès au fil du temps.",
+
+        epreuvesTitle: "Anciennes Épreuves",
+        epreuvesCard1Title: "Archives Complètes",
+        epreuvesCard1Desc: "Accédez à une collection exhaustive d'anciennes épreuves classées par matière et par niveau.",
+        epreuvesCard2Title: "Téléchargements",
+        epreuvesCard2Desc: "Téléchargez les épreuves au format PDF pour les consulter hors ligne.",
+        epreuvesCard3Title: "Corrigés Détaillés",
+        epreuvesCard3Desc: "Bénéficiez de corrigés détaillés avec explications pour chaque question.",
+
+        coursTitle: "Cours en Ligne",
+        coursCard1Title: "Cours Complets",
+        coursCard1Desc: "Des cours complets et structurés couvrant tous les programmes officiels.",
+        coursCard2Title: "Ressources Complémentaires",
+        coursCard2Desc: "Exercices, fiches de révision et ressources supplémentaires pour approfondir.",
+        coursCard3Title: "Forums d'Entraide",
+        coursCard3Desc: "Posez vos questions et obtenez de l'aide de la communauté et des enseignants.",
+
+        visuelTitle: "Cours en Visuel",
+        visuelCard1Title: "Vidéos Pédagogiques",
+        visuelCard1Desc: "Des centaines de vidéos explicatives pour comprendre les concepts complexes.",
+        visuelCard2Title: "Tableaux Interactifs",
+        visuelCard2Desc: "Tableaux blancs interactifs pour suivre les démonstrations en temps réel.",
+        visuelCard3Title: "Podcasts Éducatifs",
+        visuelCard3Desc: "Apprenez où que vous soyez avec nos podcasts téléchargeables.",
+
+        // Footer
+        footerAbout: "À propos",
+        footerContact: "Contact",
+        footerFAQ: "FAQ",
+        footerLegal: "Mentions légales",
+        footerCopyright: "&copy; 2025 iGetSense. Tous droits réservés.",
+
+        // Drawer
+        drawerNotifications: "Notifications",
+        notif1: "Nouveau cours disponible",
+        notif2: "Rappel : Test jeudi",
+        notif3: "Mise à jour de la plateforme",
+        notifNone: "Aucune notification",
+        clearNotifBtn: "Supprimer les notifications",
+        drawerLang: "Langue",
+        switchLangBtn: "Changer de langue",
+        drawerTheme: "Thème",
+        toggleThemeBtn: "Changer le thème",
+        drawerProfile: "Mon Profil",
+        profileSchool: "Lycée Tech Douala",
+        profileEmail: "jean@getsense.com",
+        profilePhone: "+237 650 00 00",
+        closeDrawerBtn: "Fermer"
+      },
+      en: {
+        // Header
+        logoText: "IGETSENSE",
+
+        // Navigation
+        navAccueil: "Home",
+        navQuiz: "Quiz",
+        navAncienne: "Past Exams",
+        navCoursLigne: "Online Courses",
+        navCoursVisuel: "Visual Courses",
+
+        // Hero section
+        heroTitle: "Welcome to iGetSense",
+        heroDesc: "An innovative educational platform that transforms learning into a captivating and interactive experience for the students of the future.",
+        startBtn: "Start the Adventure",
+
+        // Sections
+        quizTitle: "Interactive Quizzes",
+        quizCard1Title: "Personalized Quizzes",
+        quizCard1Desc: "Test your knowledge with our quizzes adapted to your study level and progress.",
+        quizCard2Title: "Leaderboards",
+        quizCard2Desc: "Challenge your friends and climb the rankings to become the best.",
+        quizCard3Title: "Progress Tracking",
+        quizCard3Desc: "Visualize your results and progress over time.",
+
+        epreuvesTitle: "Past Exams",
+        epreuvesCard1Title: "Complete Archives",
+        epreuvesCard1Desc: "Access a comprehensive collection of past exams sorted by subject and level.",
+        epreuvesCard2Title: "Downloads",
+        epreuvesCard2Desc: "Download exams in PDF format to consult them offline.",
+        epreuvesCard3Title: "Detailed Solutions",
+        epreuvesCard3Desc: "Benefit from detailed solutions with explanations for each question.",
+
+        coursTitle: "Online Courses",
+        coursCard1Title: "Complete Courses",
+        coursCard1Desc: "Complete and structured courses covering all official programs.",
+        coursCard2Title: "Additional Resources",
+        coursCard2Desc: "Exercises, revision sheets and additional resources to go deeper.",
+        coursCard3Title: "Help Forums",
+        coursCard3Desc: "Ask your questions and get help from the community and teachers.",
+
+        visuelTitle: "Visual Courses",
+        visuelCard1Title: "Educational Videos",
+        visuelCard1Desc: "Hundreds of explanatory videos to understand complex concepts.",
+        visuelCard2Title: "Interactive Whiteboards",
+        visuelCard2Desc: "Interactive whiteboards to follow demonstrations in real time.",
+        visuelCard3Title: "Educational Podcasts",
+        visuelCard3Desc: "Learn wherever you are with our downloadable podcasts.",
+
+        // Footer
+        footerAbout: "About",
+        footerContact: "Contact",
+        footerFAQ: "FAQ",
+        footerLegal: "Legal Notice",
+        footerCopyright: "&copy; 2025 iGetSense. All rights reserved.",
+
+        // Drawer
+        drawerNotifications: "Notifications",
+        notif1: "New course available",
+        notif2: "Reminder: Test on Thursday",
+        notif3: "Platform update",
+        notifNone: "No notifications",
+        clearNotifBtn: "Clear notifications",
+        drawerLang: "Language",
+        switchLangBtn: "Change language",
+        drawerTheme: "Theme",
+        toggleThemeBtn: "Change theme",
+        drawerProfile: "My Profile",
+        profileSchool: "Tech High School Douala",
+        profileEmail: "jean@getsense.com",
+        profilePhone: "+237 650 00 00",
+        closeDrawerBtn: "Close"
+      }
+    };
+
+    currentLang = (currentLang === 'fr') ? 'en' : 'fr';
+    const t = texts[currentLang];
+
+    // Mise à jour du header
+    document.getElementById('logoText').innerHTML = `<i class="fas fa-brain"></i> ${t.logoText}`;
+
+    // Mise à jour de la navigation
+    const navTexts = document.querySelectorAll('.nav-text');
+    navTexts[0].textContent = t.navAccueil;
+    navTexts[1].textContent = t.navQuiz;
+    navTexts[2].textContent = t.navAncienne;
+    navTexts[3].textContent = t.navCoursLigne;
+    navTexts[4].textContent = t.navCoursVisuel;
+
+    // Mise à jour de la section hero
+    document.getElementById('heroTitle').textContent = t.heroTitle;
+    document.getElementById('heroDesc').textContent = t.heroDesc;
+    document.getElementById('startBtn').textContent = t.startBtn;
+
+    // Mise à jour des sections de contenu
+    // Section Quiz
+    document.getElementById('quizTitle').textContent = t.quizTitle;
+    document.getElementById('quizCard1Title').textContent = t.quizCard1Title;
+    document.getElementById('quizCard1Desc').textContent = t.quizCard1Desc;
+    document.getElementById('quizCard2Title').textContent = t.quizCard2Title;
+    document.getElementById('quizCard2Desc').textContent = t.quizCard2Desc;
+    document.getElementById('quizCard3Title').textContent = t.quizCard3Title;
+    document.getElementById('quizCard3Desc').textContent = t.quizCard3Desc;
+
+    // Section Épreuves
+    document.getElementById('epreuvesTitle').textContent = t.epreuvesTitle;
+    document.getElementById('epreuvesCard1Title').textContent = t.epreuvesCard1Title;
+    document.getElementById('epreuvesCard1Desc').textContent = t.epreuvesCard1Desc;
+    document.getElementById('epreuvesCard2Title').textContent = t.epreuvesCard2Title;
+    document.getElementById('epreuvesCard2Desc').textContent = t.epreuvesCard2Desc;
+    document.getElementById('epreuvesCard3Title').textContent = t.epreuvesCard3Title;
+    document.getElementById('epreuvesCard3Desc').textContent = t.epreuvesCard3Desc;
+
+    // Section Cours
+    document.getElementById('coursTitle').textContent = t.coursTitle;
+    document.getElementById('coursCard1Title').textContent = t.coursCard1Title;
+    document.getElementById('coursCard1Desc').textContent = t.coursCard1Desc;
+    document.getElementById('coursCard2Title').textContent = t.coursCard2Title;
+    document.getElementById('coursCard2Desc').textContent = t.coursCard2Desc;
+    document.getElementById('coursCard3Title').textContent = t.coursCard3Title;
+    document.getElementById('coursCard3Desc').textContent = t.coursCard3Desc;
+
+    // Section Visuel
+    document.getElementById('visuelTitle').textContent = t.visuelTitle;
+    document.getElementById('visuelCard1Title').textContent = t.visuelCard1Title;
+    document.getElementById('visuelCard1Desc').textContent = t.visuelCard1Desc;
+    document.getElementById('visuelCard2Title').textContent = t.visuelCard2Title;
+    document.getElementById('visuelCard2Desc').textContent = t.visuelCard2Desc;
+    document.getElementById('visuelCard3Title').textContent = t.visuelCard3Title;
+    document.getElementById('visuelCard3Desc').textContent = t.visuelCard3Desc;
+
+    // Mise à jour du footer
+    document.getElementById('footerAbout').textContent = t.footerAbout;
+    document.getElementById('footerContact').textContent = t.footerContact;
+    document.getElementById('footerFAQ').textContent = t.footerFAQ;
+    document.getElementById('footerLegal').textContent = t.footerLegal;
+    document.getElementById('footerCopyright').innerHTML = t.footerCopyright;
+
+    // Mise à jour du drawer
+    document.getElementById('drawerNotifications').innerHTML = `<i class="fas fa-bell"></i> ${t.drawerNotifications} <span class="badge" id="notifCount">${document.getElementById("notifCount").textContent}</span>`;
+    document.getElementById('clearNotifBtn').innerHTML = `<i class="fas fa-trash"></i> ${t.clearNotifBtn}`;
+
+    document.getElementById('drawerLang').innerHTML = `<i class="fas fa-language"></i> ${t.drawerLang}`;
+    document.getElementById('switchLangBtn').innerHTML = `<i class="fas fa-globe-americas"></i> ${t.switchLangBtn}`;
+
+    document.getElementById('drawerTheme').innerHTML = `<i class="fas fa-moon"></i> ${t.drawerTheme}`;
+    document.getElementById('toggleThemeBtn').innerHTML = `<i class="fas fa-adjust"></i> ${t.toggleThemeBtn}`;
+
+    document.getElementById('drawerProfile').innerHTML = `<i class="fas fa-user-graduate"></i> ${t.drawerProfile}`;
+    document.getElementById('profileSchool').textContent = t.profileSchool;
+    document.getElementById('profileEmail').textContent = t.profileEmail;
+    document.getElementById('profilePhone').textContent = t.profilePhone;
+
+    document.getElementById('closeDrawerBtn').innerHTML = `<i class="fas fa-times"></i> ${t.closeDrawerBtn}`;
+
+    // Mise à jour des notifications
+    document.getElementById('notif1').innerHTML = `<i class="fas fa-check-circle"></i> ${t.notif1}`;
+    document.getElementById('notif2').innerHTML = `<i class="fas fa-calendar-alt"></i> ${t.notif2}`;
+    document.getElementById('notif3').innerHTML = `<i class="fas fa-rocket"></i> ${t.notif3}`;
+
+    // Changer l'attribut lang de l'élément html
+    document.documentElement.lang = currentLang;
+  }
+
+  // Fonction pour effacer les notifications
+  function clearNotifications() {
+    const notifList = document.getElementById("notifList");
+    const currentLang = document.documentElement.lang;
+    const notifNoneText = currentLang === 'fr' ? "Aucune notification" : "No notifications";
+
+    notifList.innerHTML = `<li><i class="fas fa-info-circle"></i> ${notifNoneText}</li>`;
+    document.getElementById("notifCount").textContent = '0';
+  }
+
+  // Animation des icônes au chargement
+  document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((item, index) => {
+      item.style.animationDelay = `${index * 0.1}s`;
+    });
+  });
+
+  // Fermer le drawer si on clique à l'extérieur
+  document.addEventListener('click', function(event) {
+    const drawer = document.getElementById('drawer');
+    const profileIcon = document.querySelector('.profile-icon');
+
+    if (drawer.classList.contains('open') &&
+        !drawer.contains(event.target) &&
+        !profileIcon.contains(event.target)) {
+      drawer.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>

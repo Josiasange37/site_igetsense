@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iGetSense - Épreuves GCE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+     --color-primary: #d4af37;;  /* Or vif */
+      --color-primary-dark: #DAA520; /* Or foncé */
+      --color-bg: #fafafa;
+      --color-text: #222;
+      --transition: 0.3s;
+      --nav-height: 70px;
+    }
+    body.dark {
+          --color-bg: #121212;
+      --color-text: #f0f0f0;
+      --color-primary: #ffc107;
+      --color-primary-dark: #ff9800; /* Or ancien pour mode sombre */
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      padding-top: var(--nav-height);
+    }
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    /* Header et navigation améliorés */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      height: var(--nav-height);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 101;
+    }
+    .nav-toggle:hover {
+      transform: rotate(90deg);
+    }
+    
+    .navbar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      transition: transform 0.4s ease-in-out;
+    }
+    
+    /* Animation des éléments de navigation */
+    .nav-item {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      padding: 0.8rem 1.2rem;
+      border-radius: 50px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .nav-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .nav-item:hover::before, .nav-item.active::before {
+      transform: translateX(100%);
+    }
+    
+    /* Animations spécifiques pour chaque icône */
+    .nav-item i {
+      font-size: 1.3rem;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .nav-item:nth-child(1) i:hover {
+      animation: bounce 0.8s ease infinite;
+      color: #ff9a00;
+    }
+    .nav-item:nth-child(2) i:hover {
+      animation: pulse 1s ease infinite;
+      color: #ffea00;
+    }
+    .nav-item:nth-child(3) i:hover {
+      animation: shake 0.5s ease infinite;
+      color: #4caf50;
+    }
+    .nav-item:nth-child(4) i:hover {
+      animation: float 2s ease-in-out infinite;
+      color: #2196f3;
+    }
+    .nav-item:nth-child(5) i:hover {
+      animation: spin 1.5s linear infinite;
+      color: #e91e63;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    @keyframes shake {
+      0% { transform: rotate(0); }
+      25% { transform: rotate(10deg); }
+      50% { transform: rotate(0); }
+      75% { transform: rotate(-10deg); }
+      100% { transform: rotate(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .profile-icon {
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      border: 2px solid white;
+      border-radius: 50%;
+      padding: 2px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .profile-icon:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 0.5s ease;
+    }
+    .profile-icon:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Drawer amélioré */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--color-text);
+      padding: 1.5rem;
+      backdrop-filter: blur(15px);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+      overflow-y: auto;
+    }
+    .drawer.open {
+      right: 0;
+    }
+    .drawer .section {
+      margin-bottom: 2rem;
+      padding: 1.2rem;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      animation: slideIn 0.6s forwards;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    .drawer .section:nth-child(1) { animation-delay: 0.1s; }
+    .drawer .section:nth-child(2) { animation-delay: 0.2s; }
+    .drawer .section:nth-child(3) { animation-delay: 0.3s; }
+    .drawer .section:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .drawer h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--color-primary);
+    }
+    .drawer h3 i {
+      font-size: 1.4rem;
+      animation: pulse 2s infinite;
+    }
+    .drawer button {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      border: none;
+      padding: 0.8rem 1.5rem;
+      color: white;
+      border-radius: 50px;
+      margin-top: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .drawer button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .drawer ul {
+      list-style: none;
+      padding-left: 1.2rem;
+      font-size: 1rem;
+    }
+    .drawer ul li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .drawer ul li:hover {
+      transform: translateX(5px);
+      color: var(--color-primary);
+    }
+    .drawer .exit {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 1.5rem;
+    }
+    .drawer .exit button {
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .drawer .exit button:hover {
+      background: linear-gradient(45deg, #c0392b, #a5281b);
+    }
+
+    /* Contenu principal */
+    .main-content {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Filtres */
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .filter-group {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 1.2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    body.dark .filter-group {
+      background: rgba(45, 45, 45, 0.85);
+    }
+    
+    .filter-group h3 {
+      margin-bottom: 1rem;
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    
+    .filter-btn {
+      background: rgba(255, 215, 0, 0.15);
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Grille d'épreuves */
+    .epreuves-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .epreuve-card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    body.dark .epreuve-card {
+      background: rgba(45, 45, 45, 0.85);
+    }
+    
+    .epreuve-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .epreuve-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .card-header {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      padding: 1.2rem;
+      position: relative;
+    }
+    
+    .card-header h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-header .badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+      flex: 1;
+    }
+    
+    .epreuve-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .detail-item i {
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+    
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+    }
+    
+    .action-btn {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .download-btn {
+      background: rgba(218, 165, 32, 0.15);
+      color: #DAA520;
+    }
+    
+    .download-btn:hover {
+      background: #DAA520;
+      color: white;
+    }
+    
+    .quiz-btn {
+      background: rgba(255, 215, 0, 0.15);
+      color: #FFD700;
+    }
+    
+    .quiz-btn:hover {
+      background: #FFD700;
+      color: white;
+    }
+    
+    .quiz-btn.disabled {
+      background: rgba(127, 140, 141, 0.15);
+      color: #7f8c8d;
+      cursor: not-allowed;
+    }
+    
+    /* Section de conversion */
+    .conversion-section {
+      background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(218, 165, 32, 0.1));
+      border-radius: 15px;
+      padding: 2rem;
+      margin-top: 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .conversion-section h2 {
+      color: var(--color-primary-dark);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .conversion-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .conversion-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .conversion-steps::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      left: 50px;
+      width: calc(100% - 100px);
+      height: 4px;
+      background: var(--color-primary);
+      z-index: 1;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+    
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--color-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border: 3px solid var(--color-primary);
+    }
+    
+    .step-text {
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .convert-btn {
+      background: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    .convert-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+    
+    /* Footer amélioré */
+    footer {
+      background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100% 100%;
+      opacity: 0.2;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+    }
+    .footer-links a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+    footer p {
+      position: relative;
+      z-index: 2;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Barre de défilement personnalisée */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 215, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-primary-dark);
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 992px) {
+      .epreuves-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      .navbar {
+        gap: 1rem;
+      }
+      .nav-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+      }
+    }
+    
+    @media screen and (max-width: 768px) {
+      .filters {
+        grid-template-columns: 1fr;
+      }
+      
+      .conversion-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+      
+      .conversion-steps::before {
+        display: none;
+      }
+      
+      .nav-toggle {
+        display: block;
+      }
+      
+      .navbar {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-dark));
+        flex-direction: column;
+        padding: 1rem 0;
+        transform: translateY(-150%);
+        z-index: 101;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+      
+      .navbar.active {
+        transform: translateY(0);
+      }
+      
+      .nav-item {
+        width: 90%;
+        justify-content: center;
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .action-btn {
+        width: 100%;
+      }
+      
+      .drawer {
+        width: 85%;
+        right: -85%;
+      }
+      
+      .drawer.open {
+        right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="particles-js"></div>
+<div class="drawer" id="drawer">
+  <div>
+    <div class="section">
+      <h3 id="drawerNotifications"><i class="fas fa-bell"></i> <span data-translate="notifications">Notifications</span> <span class="badge" id="notifCount">2</span></h3>
+      <ul id="notifList">
+        <li id="notif1"><i class="fas fa-check-circle"></i> <span data-translate="notif1">Nouveau paper GCE ajouté</span></li>
+        <li id="notif2"><i class="fas fa-calendar-alt"></i> <span data-translate="notif2">Rappel : Examen pratique</span></li>
+      </ul>
+      <button onclick="clearNotifications()" id="clearNotifBtn"><i class="fas fa-trash"></i> <span data-translate="clearNotif">Supprimer les notifications</span></button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerLang"><i class="fas fa-language"></i> <span data-translate="language">Langue</span></h3>
+      <button onclick="switchLang()" id="switchLangBtn"><i class="fas fa-globe-americas"></i> <span data-translate="changeLang">Changer de langue</span></button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerTheme"><i class="fas fa-moon"></i> <span data-translate="theme">Thème</span></h3>
+      <button onclick="toggleTheme()" id="toggleThemeBtn"><i class="fas fa-adjust"></i> <span data-translate="changeTheme">Changer le thème</span></button>
+    </div>
+    <hr>
+    <div class="section">
+      <h3 id="drawerProfile"><i class="fas fa-user-graduate"></i> <span data-translate="myProfile">Mon Profil</span></h3>
+      <p><i class="fas fa-school"></i> <span id="profileSchool" data-translate="school">Lycée Bilingue de Yaoundé</span></p>
+      <p><i class="fas fa-envelope"></i> <span id="profileEmail" data-translate="email">etudiant@getsense.com</span></p>
+      <p><i class="fas fa-graduation-cap"></i> <span id="profileLevel" data-translate="level">Niveau: Advanced Level</span></p>
+    </div>
+  </div>
+  <div class="exit">
+    <button onclick="toggleDrawer()" id="closeDrawerBtn"><i class="fas fa-times"></i> <span data-translate="close">Fermer</span></button>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <i class="fas fa-brain"></i> <span data-translate="appName">IGETSENSE GCE</span>
+  </div>
+  <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-item"><i class="fas fa-home"></i> <span data-translate="home">Accueil</span></a>
+    <a href="quiz.html" class="nav-item"><i class="fas fa-lightbulb"></i> <span data-translate="quiz">Quiz</span></a>
+    <a href="epreuves.html" class="nav-item active"><i class="fas fa-clipboard-list"></i> <span data-translate="papers">Anciene Epreuves</span></a>
+    <a href="cours.html" class="nav-item"><i class="fas fa-graduation-cap"></i> <span data-translate="courses">Cours en ligne</span></a>
+    <a href="visuel.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span data-translate="visualCourses">Cours en visuel</span></a>
+  </nav>
+  <div class="profile-icon" onclick="toggleDrawer()">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Profil">
+  </div>
+</header>
+
+<div class="main-content">
+  <h1 style="text-align: center; margin-bottom: 1.5rem; color: var(--color-primary-dark);">
+    <i class="fas fa-file-alt"></i> <span data-translate="pageTitle">Archives des Papers GCE</span>
+  </h1>
+  
+  <p style="text-align: center; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+    <span data-translate="pageDescription">Accédez aux anciennes épreuves du General Certificate of Education (GCE) avec les papers 1, 2 et 3 pour chaque matière. Téléchargez, pratiquez et convertissez en quiz interactif.</span>
+  </p>
+  
+  <div class="filters">
+    <div class="filter-group">
+      <h3><i class="fas fa-layer-group"></i> <span data-translate="filterLevel">Niveau</span></h3>
+      <div class="filter-options">
+        <button class="filter-btn active" data-filter="niveau" value="all" data-translate="filterAll">Tous</button>
+        <button class="filter-btn" data-filter="niveau" value="Ordinary" data-translate="filterOrdinary">Ordinary Level</button>
+        <button class="filter-btn" data-filter="niveau" value="Advanced" data-translate="filterAdvanced">Advanced Level</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <h3><i class="fas fa-book"></i> <span data-translate="filterSubject">Matière</span></h3>
+      <div class="filter-options">
+        <button class="filter-btn active" data-filter="matiere" value="all" data-translate="filterAll">Toutes</button>
+        <button class="filter-btn" data-filter="matiere" value="Maths" data-translate="filterMaths">Mathématiques</button>
+        <button class="filter-btn" data-filter="matiere" value="Physique" data-translate="filterPhysics">Physique</button>
+        <button class="filter-btn" data-filter="matiere" value="Chemistry" data-translate="filterChemistry">Chimie</button>
+        <button class="filter-btn" data-filter="matiere" value="Biology" data-translate="filterBiology">Biologie</button>
+        <button class="filter-btn" data-filter="matiere" value="Economics" data-translate="filterEconomics">Économie</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <h3><i class="fas fa-file"></i> <span data-translate="filterPaper">Paper</span></h3>
+      <div class="filter-options">
+        <button class="filter-btn active" data-filter="paper" value="all" data-translate="filterAll">Tous</button>
+        <button class="filter-btn" data-filter="paper" value="1" data-translate="filterPaper1">Paper 1</button>
+        <button class="filter-btn" data-filter="paper" value="2" data-translate="filterPaper2">Paper 2</button>
+        <button class="filter-btn" data-filter="paper" value="3" data-translate="filterPaper3">Paper 3</button>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <h3><i class="fas fa-calendar"></i> <span data-translate="filterYear">Année</span></h3>
+      <div class="filter-options">
+        <button class="filter-btn active" data-filter="annee" value="all" data-translate="filterAll">Toutes</button>
+        <button class="filter-btn" data-filter="annee" value="2023">2023</button>
+        <button class="filter-btn" data-filter="annee" value="2022">2022</button>
+        <button class="filter-btn" data-filter="annee" value="2021">2021</button>
+        <button class="filter-btn" data-filter="annee" value="2020">2020</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="epreuves-grid" id="epreuvesContainer">
+    <!-- Les épreuves seront générées dynamiquement par JavaScript -->
+  </div>
+  
+  <div class="conversion-section">
+    <h2><i class="fas fa-sync-alt"></i> <span data-translate="conversionTitle">Convertir en Quiz</span></h2>
+    <div class="conversion-content">
+      <div class="conversion-steps">
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <div class="step-text" data-translate="step1">
+            Téléchargez les papers qui vous intéressent
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <div class="step-text" data-translate="step2">
+            Convertissez-les en quiz interactif
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="step-text" data-translate="step3">
+            Testez vos connaissances et progressez
+          </div>
+        </div>
+      </div>
+      
+      <button class="convert-btn" id="goToQuizBtn">
+        <i class="fas fa-play-circle"></i> <span data-translate="goToQuiz">Accéder aux quiz GCE</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="#" data-translate="about">À propos</a>
+    <a href="#" data-translate="contact">Contact</a>
+    <a href="#" data-translate="faq">FAQ</a>
+    <a href="#" data-translate="legal">Mentions légales</a>
+  </div>
+  <p data-translate="copyright">&copy; 2025 iGetSense GCE. Tous droits réservés.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  // Système de traduction
+  const translations = {
+    fr: {
+      appName: "IGETSENSE GCE",
+      home: "Accueil",
+      quiz: "Quiz",
+      papers: "Papers GCE",
+      courses: "Cours en ligne",
+      visualCourses: "Cours en visuel",
+      pageTitle: "Archives des Papers GCE",
+      pageDescription: "Accédez aux anciennes épreuves du General Certificate of Education (GCE) avec les papers 1, 2 et 3 pour chaque matière. Téléchargez, pratiquez et convertissez en quiz interactif.",
+      filterLevel: "Niveau",
+      filterSubject: "Matière",
+      filterPaper: "Paper",
+      filterYear: "Année",
+      filterAll: "Tous",
+      filterOrdinary: "Ordinary Level",
+      filterAdvanced: "Advanced Level",
+      filterMaths: "Mathématiques",
+      filterPhysics: "Physique",
+      filterChemistry: "Chimie",
+      filterBiology: "Biologie",
+      filterEconomics: "Économie",
+      filterPaper1: "Paper 1",
+      filterPaper2: "Paper 2",
+      filterPaper3: "Paper 3",
+      downloadBtn: "Télécharger",
+      convertBtn: "Convertir",
+      withCorrection: "Avec corrigé",
+      withoutCorrection: "Sans corrigé",
+      conversionTitle: "Convertir en Quiz",
+      step1: "Téléchargez les papers qui vous intéressent",
+      step2: "Convertissez-les en quiz interactif",
+      step3: "Testez vos connaissances et progressez",
+      goToQuiz: "Accéder aux quiz GCE",
+      about: "À propos",
+      contact: "Contact",
+      faq: "FAQ",
+      legal: "Mentions légales",
+      copyright: "© 2025 iGetSense GCE. Tous droits réservés.",
+      notifications: "Notifications",
+      notif1: "Nouveau paper GCE ajouté",
+      notif2: "Rappel : Examen pratique",
+      clearNotif: "Supprimer les notifications",
+      language: "Langue",
+      changeLang: "Changer de langue",
+      theme: "Thème",
+      changeTheme: "Changer le thème",
+      myProfile: "Mon Profil",
+      school: "Lycée Bilingue de Yaoundé",
+      email: "etudiant@getsense.com",
+      level: "Niveau: Advanced Level",
+      close: "Fermer"
+    },
+    en: {
+      appName: "IGETSENSE GCE",
+      home: "Home",
+      quiz: "Quiz",
+      papers: "GCE Papers",
+      courses: "Online Courses",
+      visualCourses: "Visual Courses",
+      pageTitle: "GCE Papers Archive",
+      pageDescription: "Access past General Certificate of Education (GCE) papers with papers 1, 2 and 3 for each subject. Download, practice and convert into interactive quizzes.",
+      filterLevel: "Level",
+      filterSubject: "Subject",
+      filterPaper: "Paper",
+      filterYear: "Year",
+      filterAll: "All",
+      filterOrdinary: "Ordinary Level",
+      filterAdvanced: "Advanced Level",
+      filterMaths: "Mathematics",
+      filterPhysics: "Physics",
+      filterChemistry: "Chemistry",
+      filterBiology: "Biology",
+      filterEconomics: "Economics",
+      filterPaper1: "Paper 1",
+      filterPaper2: "Paper 2",
+      filterPaper3: "Paper 3",
+      downloadBtn: "Download",
+      convertBtn: "Convert",
+      withCorrection: "With correction",
+      withoutCorrection: "Without correction",
+      conversionTitle: "Convert to Quiz",
+      step1: "Download the papers that interest you",
+      step2: "Convert them into interactive quizzes",
+      step3: "Test your knowledge and progress",
+      goToQuiz: "Access GCE Quizzes",
+      about: "About",
+      contact: "Contact",
+      faq: "FAQ",
+      legal: "Legal Notice",
+      copyright: "© 2025 iGetSense GCE. All rights reserved.",
+      notifications: "Notifications",
+      notif1: "New GCE paper added",
+      notif2: "Reminder: Practical exam",
+      clearNotif: "Clear notifications",
+      language: "Language",
+      changeLang: "Change language",
+      theme: "Theme",
+      changeTheme: "Change theme",
+      myProfile: "My Profile",
+      school: "Bilingual High School of Yaounde",
+      email: "student@getsense.com",
+      level: "Level: Advanced Level",
+      close: "Close"
+    }
+  };
+
+  // Configuration des particules avec couleur or
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#FFD700" },  // Couleur or
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      move: { 
+        enable: true, 
+        speed: 1.5,
+        direction: "none",
+        random: true,
+        out_mode: "out",
+        bounce: false
+      }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { 
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" }
+      },
+      modes: { 
+        repulse: { distance: 100, duration: 0.4 },
+        push: { particles_nb: 4 }
+      }
+    }
+  });
+
+  // Fonction pour afficher les épreuves
+  function renderEpreuves(filterNiveau = 'all', filterMatiere = 'all', filterPaper = 'all', filterAnnee = 'all') {
+    const container = document.getElementById('epreuvesContainer');
+    container.innerHTML = '';
+    
+    const filteredEpreuves = epreuves.filter(epreuve => {
+      return (filterNiveau === 'all' || epreuve.niveau === filterNiveau) &&
+             (filterMatiere === 'all' || epreuve.matiere === filterMatiere) &&
+             (filterPaper === 'all' || epreuve.paper.toString() === filterPaper) &&
+             (filterAnnee === 'all' || epreuve.annee.toString() === filterAnnee);
+    });
+    
+    if (filteredEpreuves.length === 0) {
+      container.innerHTML = `<div class="no-result" style="grid-column: 1 / -1; text-align: center; padding: 2rem; background: rgba(255,255,255,0.85); border-radius: 15px;">
+        <i class="fas fa-search" style="font-size: 3rem; color: var(--color-primary); margin-bottom: 1rem;"></i>
+        <h3 data-translate="noResultsTitle">Aucune épreuve trouvée</h3>
+        <p data-translate="noResultsDesc">Essayez de modifier vos filtres de recherche</p>
+      </div>`;
+      updateTexts(currentLang);
+      return;
+    }
+    
+    filteredEpreuves.forEach(epreuve => {
+      const card = document.createElement('div');
+      card.className = 'epreuve-card';
+      
+      // Couleur par niveau
+      let badgeColor = '#3498db';
+      if (epreuve.niveau === 'Ordinary') badgeColor = '#2ecc71';
+      if (epreuve.niveau === 'Advanced') badgeColor = '#e74c3c';
+      
+      // Matière icon
+      let matiereIcon = 'fa-book';
+      if (epreuve.matiere === 'Maths') matiereIcon = 'fa-calculator';
+      if (epreuve.matiere === 'Physics') matiereIcon = 'fa-atom';
+      if (epreuve.matiere === 'Chemistry') matiereIcon = 'fa-flask';
+      if (epreuve.matiere === 'Biology') matiereIcon = 'fa-leaf';
+      if (epreuve.matiere === 'Economics') matiereIcon = 'fa-chart-line';
+      
+      // Traduction des textes statiques
+      const withCorrection = translations[currentLang].withCorrection;
+      const withoutCorrection = translations[currentLang].withoutCorrection;
+      const downloadText = translations[currentLang].downloadBtn;
+      const convertText = translations[currentLang].convertBtn;
+      const levelText = translations[currentLang].filterLevel;
+      const paperText = translations[currentLang].filterPaper;
+      const yearText = translations[currentLang].filterYear;
+      
+      card.innerHTML = `
+        <div class="card-header" style="background: linear-gradient(45deg, ${badgeColor}, ${adjustColor(badgeColor, -20)});">
+          <h3>${epreuve.titre}</h3>
+          <div class="badge">${epreuve.niveau}</div>
+        </div>
+        <div class="card-body">
+          <div class="epreuve-details">
+            <div class="detail-item">
+              <i class="fas ${matiereIcon}"></i>
+              <span>${getMatiereName(epreuve.matiere)}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-file-alt"></i>
+              <span>${paperText} ${epreuve.paper}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span>${yearText}: ${epreuve.annee}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas ${epreuve.corrige ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'}"></i>
+              <span>${epreuve.corrige ? withCorrection : withoutCorrection}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="action-btn download-btn" data-id="${epreuve.id}">
+              <i class="fas fa-download"></i> ${downloadText}
+            </button>
+            <button class="action-btn quiz-btn ${epreuve.telecharge ? '' : 'disabled'}" 
+                    data-id="${epreuve.id}" 
+                    ${epreuve.telecharge ? '' : 'disabled'}>
+              <i class="fas fa-sync-alt"></i> ${convertText}
+            </button>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(card);
+      
+      // Animation d'apparition progressive
+      setTimeout(() => {
+        card.classList.add('visible');
+      }, 100);
+    });
+  }
+  
+  // Fonction utilitaire pour ajuster les couleurs
+  function adjustColor(hex, amount) {
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+    
+    r = Math.max(0, Math.min(255, r + amount));
+    g = Math.max(0, Math.min(255, g + amount));
+    b = Math.max(0, Math.min(255, b + amount));
+    
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+  
+  // Fonction pour obtenir le nom complet de la matière
+  function getMatiereName(code) {
+    const matieres = {
+      'Maths': translations[currentLang].filterMaths,
+      'Physics': translations[currentLang].filterPhysics,
+      'Chemistry': translations[currentLang].filterChemistry,
+      'Biology': translations[currentLang].filterBiology,
+      'Economics': translations[currentLang].filterEconomics
+    };
+    return matieres[code] || code;
+  }
+  
+  // Gestion des filtres
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const filterType = this.getAttribute('data-filter');
+      const value = this.getAttribute('value');
+      
+      // Mettre à jour le bouton actif
+      this.parentElement.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      this.classList.add('active');
+      
+      // Récupérer les valeurs des filtres
+      const niveauFilter = document.querySelector('[data-filter="niveau"].active').getAttribute('value');
+      const matiereFilter = document.querySelector('[data-filter="matiere"].active').getAttribute('value');
+      const paperFilter = document.querySelector('[data-filter="paper"].active').getAttribute('value');
+      const anneeFilter = document.querySelector('[data-filter="annee"].active').getAttribute('value');
+      
+      // Afficher les épreuves filtrées
+      renderEpreuves(niveauFilter, matiereFilter, paperFilter, anneeFilter);
+    });
+  });
+  
+  // Gestion des boutons de téléchargement
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.download-btn')) {
+      const btn = e.target.closest('.download-btn');
+      const id = btn.getAttribute('data-id');
+      
+      // Trouver l'épreuve
+      const epreuve = epreuves.find(e => e.id == id);
+      if (epreuve) {
+        // Marquer comme téléchargée
+        epreuve.telecharge = true;
+        
+        // Mettre à jour le bouton de conversion
+        const quizBtn = btn.closest('.card-actions').querySelector('.quiz-btn');
+        quizBtn.classList.remove('disabled');
+        quizBtn.disabled = false;
+        
+        // Animation de confirmation
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> ' + translations[currentLang].downloadedText;
+        btn.style.background = '#27ae60';
+        btn.style.color = 'white';
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 2000);
+        
+        // Simuler le téléchargement
+        simulateDownload(epreuve);
+      }
+    }
+    
+    // Gestion de la conversion en quiz
+    if (e.target.closest('.quiz-btn') && !e.target.closest('.quiz-btn').disabled) {
+      const btn = e.target.closest('.quiz-btn');
+      const id = btn.getAttribute('data-id');
+      
+      // Trouver l'épreuve
+      const epreuve = epreuves.find(e => e.id == id);
+      if (epreuve) {
+        // Animation de chargement
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + translations[currentLang].convertingText;
+        
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fas fa-check"></i> ' + translations[currentLang].convertedText;
+          
+          // Redirection vers la page quiz avec l'ID de l'épreuve
+          setTimeout(() => {
+            window.location.href = `quiz.html?epreuve=${id}`;
+          }, 1000);
+        }, 1500);
+      }
+    }
+  });
+  
+  // Simulation de téléchargement
+  function simulateDownload(epreuve) {
+    console.log(`Téléchargement de "${epreuve.titre}"...`);
+    // Dans une application réelle, on ferait une requête pour télécharger le fichier PDF
+  }
+  
+  // Bouton pour accéder aux quiz
+  document.getElementById('goToQuizBtn').addEventListener('click', function() {
+    window.location.href = 'quiz.html';
+  });
+  
+  // Fonctions pour la navigation
+  function toggleNav() {
+    const navBar = document.getElementById('navbar');
+    const navToggle = document.getElementById('navToggle');
+    
+    navBar.classList.toggle('active');
+    
+    // Changer l'icône du bouton
+    if (navBar.classList.contains('active')) {
+      navToggle.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+      navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  }
+  
+  // Fonction pour le tiroir de profil
+  function toggleDrawer() {
+    document.getElementById('drawer').classList.toggle('open');
+  }
+  
+  // Fonction pour changer le thème
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+    
+    // Stocker la préférence de thème
+    const isDarkMode = document.body.classList.contains('dark');
+    localStorage.setItem('darkMode', isDarkMode);
+  }
+  
+  // Fonction pour changer la langue
+  function switchLang() {
+    currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('userLang', currentLang);
+    updateTexts(currentLang);
+    renderEpreuves();
+  }
+  
+  // Fonction pour effacer les notifications
+  function clearNotifications() {
+    const notifList = document.getElementById("notifList");
+    notifList.innerHTML = '<li><i class="fas fa-info-circle"></i> ' + translations[currentLang].noNotificationsText + '</li>';
+    document.getElementById("notifCount").textContent = '0';
+  }
+  
+  // Mettre à jour tous les textes traduits
+  function updateTexts(lang) {
+    document.querySelectorAll('[data-translate]').forEach(element => {
+      const key = element.getAttribute('data-translate');
+      if (translations[lang] && translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+    });
+  }
+
+  // Données des épreuves GCE
+  const epreuves = [
+    { id: 1, niveau: 'Ordinary', matiere: 'Maths', paper: 1, annee: 2023, titre: 'Mathematics O-Level Paper 1', corrige: true, telecharge: false },
+    { id: 2, niveau: 'Ordinary', matiere: 'Maths', paper: 2, annee: 2023, titre: 'Mathematics O-Level Paper 2', corrige: true, telecharge: false },
+    { id: 3, niveau: 'Ordinary', matiere: 'Physics', paper: 1, annee: 2023, titre: 'Physics O-Level Paper 1', corrige: true, telecharge: false },
+    { id: 4, niveau: 'Ordinary', matiere: 'Physics', paper: 2, annee: 2023, titre: 'Physics O-Level Paper 2', corrige: true, telecharge: false },
+    { id: 5, niveau: 'Ordinary', matiere: 'Chemistry', paper: 1, annee: 2023, titre: 'Chemistry O-Level Paper 1', corrige: true, telecharge: false },
+    { id: 6, niveau: 'Ordinary', matiere: 'Chemistry', paper: 2, annee: 2023, titre: 'Chemistry O-Level Paper 2', corrige: true, telecharge: false },
+    { id: 7, niveau: 'Advanced', matiere: 'Maths', paper: 1, annee: 2023, titre: 'Mathematics A-Level Paper 1', corrige: true, telecharge: false },
+    { id: 8, niveau: 'Advanced', matiere: 'Maths', paper: 2, annee: 2023, titre: 'Mathematics A-Level Paper 2', corrige: true, telecharge: false },
+    { id: 9, niveau: 'Advanced', matiere: 'Maths', paper: 3, annee: 2023, titre: 'Mathematics A-Level Paper 3', corrige: true, telecharge: false },
+    { id: 10, niveau: 'Advanced', matiere: 'Physics', paper: 1, annee: 2023, titre: 'Physics A-Level Paper 1', corrige: true, telecharge: false },
+    { id: 11, niveau: 'Advanced', matiere: 'Physics', paper: 2, annee: 2023, titre: 'Physics A-Level Paper 2', corrige: true, telecharge: false },
+    { id: 12, niveau: 'Advanced', matiere: 'Physics', paper: 3, annee: 2023, titre: 'Physics A-Level Paper 3', corrige: true, telecharge: false },
+    { id: 13, niveau: 'Advanced', matiere: 'Chemistry', paper: 1, annee: 2022, titre: 'Chemistry A-Level Paper 1', corrige: true, telecharge: false },
+    { id: 14, niveau: 'Advanced', matiere: 'Chemistry', paper: 2, annee: 2022, titre: 'Chemistry A-Level Paper 2', corrige: true, telecharge: false },
+    { id: 15, niveau: 'Advanced', matiere: 'Biology', paper: 1, annee: 2022, titre: 'Biology A-Level Paper 1', corrige: true, telecharge: false },
+    { id: 16, niveau: 'Advanced', matiere: 'Biology', paper: 2, annee: 2022, titre: 'Biology A-Level Paper 2', corrige: true, telecharge: false },
+    { id: 17, niveau: 'Advanced', matiere: 'Economics', paper: 1, annee: 2022, titre: 'Economics A-Level Paper 1', corrige: true, telecharge: false },
+    { id: 18, niveau: 'Advanced', matiere: 'Economics', paper: 2, annee: 2022, titre: 'Economics A-Level Paper 2', corrige: true, telecharge: false },
+    { id: 19, niveau: 'Ordinary', matiere: 'Biology', paper: 1, annee: 2021, titre: 'Biology O-Level Paper 1', corrige: true, telecharge: false },
+    { id: 20, niveau: 'Ordinary', matiere: 'Biology', paper: 2, annee: 2021, titre: 'Biology O-Level Paper 2', corrige: true, telecharge: false }
+  ];
+  
+  // Ajouter des textes supplémentaires pour les états
+  translations.fr.downloadedText = "Téléchargé!";
+  translations.fr.convertingText = "Conversion...";
+  translations.fr.convertedText = "Converti!";
+  translations.fr.noResultsTitle = "Aucune épreuve trouvée";
+  translations.fr.noResultsDesc = "Essayez de modifier vos filtres de recherche";
+  translations.fr.noNotificationsText = "Aucune notification";
+  
+  translations.en.downloadedText = "Downloaded!";
+  translations.en.convertingText = "Converting...";
+  translations.en.convertedText = "Converted!";
+  translations.en.noResultsTitle = "No papers found";
+  translations.en.noResultsDesc = "Try changing your search filters";
+  translations.en.noNotificationsText = "No notifications";
+  
+  // Initialisation
+  let currentLang = localStorage.getItem('userLang') || 'fr';
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier la préférence de thème
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+    }
+    
+    // Fermer la navigation mobile si un lien est cliqué
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          document.getElementById('navbar').classList.remove('active');
+          document.getElementById('navToggle').innerHTML = '<i class="fas fa-bars"></i>';
+        }
+      });
+    });
+    
+    // Gestion de la navigation mobile
+    document.getElementById('navToggle').addEventListener('click', toggleNav);
+    
+    // Fermer le drawer si on clique à l'extérieur
+    document.addEventListener('click', function(event) {
+      const drawer = document.getElementById('drawer');
+      const profileIcon = document.querySelector('.profile-icon');
+      
+      if (drawer.classList.contains('open') &&
+          !drawer.contains(event.target) &&
+          !profileIcon.contains(event.target)) {
+        drawer.classList.remove('open');
+      }
+    });
+    
+    // Initialisation du contenu
+    updateTexts(currentLang);
+    renderEpreuves();
+    
+    // Vérifier si des épreuves ont été téléchargées précédemment
+    const downloadedIds = JSON.parse(localStorage.getItem('downloadedEpreuves') || '[]');
+    downloadedIds.forEach(id => {
+      const epreuve = epreuves.find(e => e.id == id);
+      if (epreuve) epreuve.telecharge = true;
+    });
+  });
+</script>
+</body>
+</html>
